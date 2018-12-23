@@ -12,5 +12,7 @@ void opcontrol()
 		ballControl();
 
 		brakeControl();
+
+		doubleShotControl();
 	}
 }
