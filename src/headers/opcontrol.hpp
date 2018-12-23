@@ -98,8 +98,6 @@ void doubleShotControl()
 
       ballIntake.setTarget(200);
       ballIndexer.setTarget(200);
-
-      flywheel.setTarget(150);
     }
   }
 }
