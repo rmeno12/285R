@@ -1,16 +1,14 @@
-#include "headers/opcontrol.hpp"
+#include "headers/initOp"
 
 void opcontrol()
 {
-	while(true)
-	{
-		drive.tank(joystick.getAnalog(ControllerAnalog::leftY), joystick.getAnalog(ControllerAnalog::rightY));
-		flywheel.setTarget(150);
+  drive.arcade
+  (
+    joystick.getAnalog(ControllerAnalog::leftY),
+    joystick.getAnalog(ControllerAnalog::rightY)
+  );
 
-		lControl();
-
-		ballControl();
-
-		brakeControl();
-	}
+  brakeControl();
+  ballControl();
+  lControl();
 }

@@ -1,0 +1,24 @@
+#include "main.h"
+
+extern Controller joystick;
+
+ControllerButton btnShoot												(ControllerDigital::R1);
+ControllerButton btnBallIntake									(ControllerDigital::R2);
+ControllerButton btnReverseBallSystem						(ControllerDigital::L2);
+
+ControllerButton btnLU													(ControllerDigital::up);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+ControllerButton btnLD													(ControllerDigital::down);       //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+
+ControllerButton btnLazyMode										(ControllerDigital::L1);
+
+extern auto ballIntake;
+extern auto ballIndexer;
+extern auto flywheel;
+extern auto l;
+
+extern bool ballIntakeToggle;
+extern bool lazy;
+
+void lControl();
+void ballControl();
+void brakeControl();
