@@ -2,11 +2,8 @@
 
 void opcontrol()
 {
-  drive.arcade
-  (
-    joystick.getAnalog(ControllerAnalog::leftY),
-    joystick.getAnalog(ControllerAnalog::rightY)
-  );
+  flywheel.setTarget(170);
+  doArcade();
 
   brakeControl();
   ballControl();

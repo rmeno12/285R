@@ -1,6 +1,22 @@
 #include "headers/initOp"
 
-auto drive = ChassisControllerFactory::create
+Controller joystick;
+
+ControllerButton btnShoot												(ControllerDigital::R1);
+ControllerButton btnBallIntake									(ControllerDigital::R2);
+ControllerButton btnReverseBallSystem						(ControllerDigital::L2);
+
+ControllerButton btnLU													(ControllerDigital::up);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+ControllerButton btnLD													(ControllerDigital::down);       //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+
+ControllerButton btnLazyMode										(ControllerDigital::L1);
+
+AsyncVelIntegratedController ballIndexer            = AsyncControllerFactory::velIntegrated(-7);
+AsyncVelIntegratedController ballIntake             = AsyncControllerFactory::velIntegrated(-6);
+AsyncVelIntegratedController flywheel               = AsyncControllerFactory::velIntegrated(+5);
+AsyncVelIntegratedController l                      = AsyncControllerFactory::velIntegrated(-8);
+
+ChassisControllerIntegrated drive = ChassisControllerFactory::create
  (
    {1, 2},
    {-3, -4},
@@ -8,15 +24,10 @@ auto drive = ChassisControllerFactory::create
    {4_in, 9.78_in}
 );
 
-auto ballIndexer            = AsyncControllerFactory::velIntegrated(-7);
-auto ballIntake             = AsyncControllerFactory::velIntegrated(-6);
-auto flywheel               = AsyncControllerFactory::velIntegrated(+5);
-auto l                      = AsyncControllerFactory::velIntegrated(-8);
-
 bool ballIntakeToggle {true};
 bool lazy             {false};
 
-void lControl()
+void lControl ()
 {
   if (btnLU.isPressed())
     l.setTarget(+125);
@@ -26,7 +37,7 @@ void lControl()
     l.setTarget(0);
 }
 
-void ballControl()
+void ballControl ()
 {
   if (btnBallIntake.changedToPressed())
     ballIntakeToggle = !ballIntakeToggle;
@@ -53,7 +64,7 @@ void ballControl()
   }
 }
 
-void brakeControl()
+void brakeControl ()
 {
   if (btnLazyMode.changedToPressed())
     lazy = !lazy;
@@ -61,4 +72,22 @@ void brakeControl()
     drive.setBrakeMode(AbstractMotor::brakeMode::hold);
   else
     drive.setBrakeMode(AbstractMotor::brakeMode::coast);
+}
+
+void doArcade ()
+{
+  drive.arcade
+  (
+    joystick.getAnalog(ControllerAnalog::leftY),
+    joystick.getAnalog(ControllerAnalog::rightY)
+  );
+}
+
+void doTank ()
+{
+  drive.tank
+  (
+    joystick.getAnalog(ControllerAnalog::leftY),
+    joystick.getAnalog(ControllerAnalog::rightY)
+  );
 }

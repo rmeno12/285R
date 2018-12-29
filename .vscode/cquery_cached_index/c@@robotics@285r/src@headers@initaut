@@ -1,3 +1,4 @@
+#pragma once
 #include "main.h"
 
 #define RED 1
@@ -6,13 +7,16 @@
 #define FWD 0
 #define BWD 1
 
-extern auto ballIntakeAut;
-extern auto ballIndexerAut;
-extern auto flywheelAut;
-extern auto lAut;
+extern AsyncVelIntegratedController ballIntakeAut;
+extern AsyncVelIntegratedController ballIndexerAut;
+extern AsyncVelIntegratedController flywheelAut;
+extern AsyncVelIntegratedController lAut;
 
-extern auto driveAut;
-extern auto profile;
+extern ChassisControllerIntegrated driveAut;
+extern AsyncMotionProfileController profile;
 
 extern const bool right;
 extern const bool left;
+
+void shoot ();
+void turn (bool direction);

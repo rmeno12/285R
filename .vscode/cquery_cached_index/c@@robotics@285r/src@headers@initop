@@ -1,24 +1,29 @@
+#pragma once
 #include "main.h"
 
-extern Controller joystick;
+// extern Controller joystick;
 
-ControllerButton btnShoot												(ControllerDigital::R1);
-ControllerButton btnBallIntake									(ControllerDigital::R2);
-ControllerButton btnReverseBallSystem						(ControllerDigital::L2);
+extern ControllerButton btnShoot;
+extern ControllerButton btnBallIntake;
+extern ControllerButton btnReverseBallSystem;
 
-ControllerButton btnLU													(ControllerDigital::up);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
-ControllerButton btnLD													(ControllerDigital::down);       //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+extern ControllerButton btnLU;
+extern ControllerButton btnLD;
 
-ControllerButton btnLazyMode										(ControllerDigital::L1);
+extern ControllerButton btnLazyMode;
 
-extern auto ballIntake;
-extern auto ballIndexer;
-extern auto flywheel;
-extern auto l;
+extern ChassisControllerIntegrated drive;
+extern AsyncVelIntegratedController ballIntake;
+extern AsyncVelIntegratedController ballIndexer;
+extern AsyncVelIntegratedController flywheel;
+extern AsyncVelIntegratedController l;
 
 extern bool ballIntakeToggle;
 extern bool lazy;
 
-void lControl();
-void ballControl();
-void brakeControl();
+void lControl ();
+void ballControl ();
+void brakeControl ();
+
+void doArcade ();
+void doTank ();
