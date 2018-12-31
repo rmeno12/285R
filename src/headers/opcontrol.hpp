@@ -25,6 +25,9 @@ auto ballIntake             = AsyncControllerFactory::velIntegrated(-6);
 auto flywheel               = AsyncControllerFactory::velIntegrated(+5);
 auto l                      = AsyncControllerFactory::velIntegrated(-8);
 
+auto driveL = MotorGroup({1, 2});
+auto driveR = MotorGroup({-3, -4});
+
 bool ballIntakeToggle {true};
 bool lazy             {false};
 bool doubleShot       {false};
@@ -71,12 +74,24 @@ void ballControl()
 void brakeControl()
 {
   if (btnLazyMode.changedToPressed())
+  {
     lazy = !lazy;
+    driveL.tarePosition();
+    driveR.tarePosition();
+  }
 
   if (lazy)
-    drive.setBrakeMode(AbstractMotor::brakeMode::hold);
+  {
+    driveL.setBrakeMode(AbstractMotor::brakeMode::hold);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::hold);
+    driveL.moveAbsolute(0, 200);
+    driveR.moveAbsolute(0, 200);
+  }
   else
-    drive.setBrakeMode(AbstractMotor::brakeMode::coast);
+  {
+    driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+  }
 }
 
 void doubleShotControl()
