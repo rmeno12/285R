@@ -1,4 +1,4 @@
-#include "headers/initAut"
+#include "../header files/initAut"
 
 AsyncVelIntegratedController ballIntakeAut          = AsyncControllerFactory::velIntegrated(-6);
 AsyncVelIntegratedController ballIndexerAut         = AsyncControllerFactory::velIntegrated(-7);

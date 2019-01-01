@@ -1,5 +1,5 @@
-#include "headers/initAut"
-#include "headers/waypoints"
+#include "../header files/initAut"
+#include "../header files/waypoints"
 
 void autonomous()
 {

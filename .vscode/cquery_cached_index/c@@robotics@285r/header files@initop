@@ -1,0 +1,27 @@
+#pragma once
+#include "main.h"
+
+extern ControllerButton btnShoot;
+extern ControllerButton btnBallIntake;
+extern ControllerButton btnReverseBallSystem;
+
+extern ControllerButton btnLU;
+extern ControllerButton btnLD;
+
+extern ControllerButton btnLazyMode;
+
+extern ChassisControllerIntegrated drive;
+extern AsyncVelIntegratedController ballIntake;
+extern AsyncVelIntegratedController ballIndexer;
+extern AsyncVelIntegratedController flywheel;
+extern AsyncVelIntegratedController l;
+
+extern bool ballIntakeToggle;
+extern bool lazy;
+
+void lControl ();
+void ballControl ();
+void brakeControl ();
+
+void doArcade ();
+void doTank ();
