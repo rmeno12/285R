@@ -7,5 +7,7 @@ void autonomous()
   profile.setTarget("Ball", FWD);
   profile.waitUntilSettled();
 
-  // sup
+  profile.generatePath({initRed, redBall}, "Ball");
+  profile.setTarget("Ball", BWD);
+  profile.waitUntilSettled();
 }
