@@ -6,6 +6,7 @@
 extern ControllerButton btnShoot;
 extern ControllerButton btnBallIntake;
 extern ControllerButton btnReverseBallSystem;
+extern ControllerButton btnDoubleShot;
 
 // extern ControllerButton btnLU;
 // extern ControllerButton btnLD;
@@ -14,16 +15,16 @@ extern ControllerButton btnLUsager;
 extern ControllerButton btnLazyMode;
 
 extern ChassisControllerIntegrated drive;
+extern MotorGroup driveL;
+extern MotorGroup driveR;
 extern AsyncVelIntegratedController ballIntake;
 extern AsyncVelIntegratedController ballIndexer;
 extern AsyncVelIntegratedController flywheel;
 extern AsyncPosIntegratedController l;
 
-extern AsyncMotionProfileController lProfile;
-
-
 extern bool ballIntakeToggle;
 extern bool lazy;
+extern bool doubleShot;
 
 extern bool lUsage;
 
@@ -31,8 +32,10 @@ extern const bool online;
 
 void lControl ();
 void ballControl ();
+void doubleShotControl ();
 
-void lazyMode ();
+void lazyModeFn ();
+// void lazyMode ();
 
 void doArcade ();
 void doTank ();
