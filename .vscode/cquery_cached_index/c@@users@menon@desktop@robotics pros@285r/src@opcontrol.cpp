@@ -1,16 +1,19 @@
-#include "headers/opcontrol.hpp"
+#include "../header files/initOp"
 
 void opcontrol()
 {
-	while(true)
-	{
-		drive.tank(joystick.getAnalog(ControllerAnalog::leftY), joystick.getAnalog(ControllerAnalog::rightY));
-		flywheel.setTarget(150);
+  l.tarePosition();
+  while(ONLINE)
+  {
+    flywheel.moveVelocity(190);
 
-		lControl();
+    if (btnLazyMode.changedToPressed())
+      lazy = !lazy;
 
-		ballControl();
-
-		brakeControl();
-	}
+    doArcade();
+    // lazyModeFn();
+    doubleShotControl();
+    ballControl();
+    lControl();
+  }
 }

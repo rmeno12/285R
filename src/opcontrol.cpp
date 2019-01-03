@@ -2,13 +2,10 @@
 
 void opcontrol()
 {
-  l.reset();
-  l.setMaxVelocity(125);
-  // pros::Task lazyMode(lazyModeFn, (void*)"something", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "LazyMode");
-  std::string rpm = "";
+  l.tarePosition();
   while(ONLINE)
   {
-    flywheel.setTarget(95);
+    flywheel.moveVelocity(190);
 
     if (btnLazyMode.changedToPressed())
       lazy = !lazy;
