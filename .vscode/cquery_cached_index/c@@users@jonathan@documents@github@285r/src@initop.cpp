@@ -3,13 +3,14 @@
 
 Controller joystick;
 
-ControllerButton btnDoubleShot                  (ControllerDigital::X);
 ControllerButton btnShoot												(ControllerDigital::R2);
-
 ControllerButton btnBallIntake									(ControllerDigital::R1);
 ControllerButton btnReverseBallSystem						(ControllerDigital::L1);
+ControllerButton btnDoubleShot                  (ControllerDigital::X);
 
-ControllerButton btnL                           (ControllerDigital::L2);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+// ControllerButton btnLU													(ControllerDigital::up);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+// ControllerButton btnLD													(ControllerDigital::down);       //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+ControllerButton btnLUsager                     (ControllerDigital::L2);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
 
 ControllerButton btnLazyMode										(ControllerDigital::up);
 
@@ -20,14 +21,14 @@ AsyncPosIntegratedController l                      = AsyncControllerFactory::po
 
 ChassisControllerIntegrated drive = ChassisControllerFactory::create
  (
-   {1, -2},
-   {-10, 9},
+   {-1, -2},
+   {10, 9},
    AbstractMotor::gearset::green,
    {4_in, 9.78_in}
 );
 
-MotorGroup driveL = MotorGroup({1, -2});
-MotorGroup driveR = MotorGroup({9, -10});
+MotorGroup driveL = MotorGroup({-1, -2});
+MotorGroup driveR = MotorGroup({9, 10});
 
 bool ballIntakeToggle {false};
 bool lazy             {false};
@@ -37,7 +38,7 @@ bool lUsage            {0};
 
 void lControl ()
 {
-  if (btnL.changedToPressed())
+  if (btnLUsager.changedToPressed())
     lUsage = !lUsage;
 
   else if(lUsage)
@@ -104,7 +105,7 @@ void doubleShotControl ()
     ballIntake.setTarget(0);
     ballIndexer.setTarget(0);
 
-    flywheel.setTarget();
+    flywheel.setTarget(70);
     flywheel.waitUntilSettled();
 
     ballIntake.setTarget(200);
