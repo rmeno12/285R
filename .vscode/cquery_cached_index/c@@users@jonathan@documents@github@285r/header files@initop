@@ -17,10 +17,11 @@ extern ControllerButton btnLazyMode;
 extern ChassisControllerIntegrated drive;
 extern MotorGroup driveL;
 extern MotorGroup driveR;
-extern AsyncVelIntegratedController ballIntake;
-extern AsyncVelIntegratedController ballIndexer;
-extern AsyncVelIntegratedController flywheel;
-extern AsyncPosIntegratedController l;
+
+extern Motor ballIntake;
+extern Motor ballIndexer;
+extern Motor flywheel;
+extern Motor l;
 
 extern bool ballIntakeToggle;
 extern bool lazy;
@@ -30,12 +31,11 @@ extern bool lUsage;
 
 extern const bool online;
 
-void lControl ();
-void ballControl ();
+void lControl          ();
+void ballControl       ();
 void doubleShotControl ();
 
-void lazyModeFn ();
-// void lazyMode ();
+void lazyMode ();
 
 void doArcade ();
-void doTank ();
+void doTank   ();
