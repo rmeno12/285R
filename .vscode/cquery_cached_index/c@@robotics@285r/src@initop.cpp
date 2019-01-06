@@ -1,40 +1,34 @@
-#include "../header files/initOp"
+#include "../header files/initRobot"
 
 Controller joystick;
 
-ControllerButton btnShoot												(ControllerDigital::R1);
-ControllerButton btnBallIntake									(ControllerDigital::R2);
-ControllerButton btnReverseBallSystem						(ControllerDigital::L2);
+ControllerButton btnShoot												(ControllerDigital::R2);
+ControllerButton btnBallIntake									(ControllerDigital::R1);
+ControllerButton btnReverseBallSystem						(ControllerDigital::L1);
+ControllerButton btnDoubleShot                  (ControllerDigital::X );
 
-ControllerButton btnLU													(ControllerDigital::up);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
-ControllerButton btnLD													(ControllerDigital::down);       //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
+ControllerButton btnLUsager                     (ControllerDigital::L2);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
 
-ControllerButton btnLazyMode										(ControllerDigital::L1);
+ControllerButton btnLazyMode										(ControllerDigital::up);
 
-AsyncVelIntegratedController ballIndexer            = AsyncControllerFactory::velIntegrated(-7);
-AsyncVelIntegratedController ballIntake             = AsyncControllerFactory::velIntegrated(-6);
-AsyncVelIntegratedController flywheel               = AsyncControllerFactory::velIntegrated(+5);
-AsyncVelIntegratedController l                      = AsyncControllerFactory::velIntegrated(-8);
-
-ChassisControllerIntegrated drive = ChassisControllerFactory::create
- (
-   {1, 2},
-   {-3, -4},
-   AbstractMotor::gearset::green,
-   {4_in, 9.78_in}
-);
-
-bool ballIntakeToggle {true};
+bool ballIntakeToggle {false};
 bool lazy             {false};
+bool doubleShot       {false};
+bool lUsage           {false};
 
 void lControl ()
 {
-  if (btnLU.isPressed())
-    l.setTarget(+125);
-  else if (btnLD.isPressed())
-    l.setTarget(-125);
+  if (btnLUsager.changedToPressed())
+    lUsage = !lUsage;
+
+  if (lUsage)
+  {
+    l.moveAbsolute(-280, 200);
+  }
   else
-    l.setTarget(0);
+  {
+    l.moveAbsolute(0, 200);
+  }
 }
 
 void ballControl ()
@@ -42,52 +36,110 @@ void ballControl ()
   if (btnBallIntake.changedToPressed())
     ballIntakeToggle = !ballIntakeToggle;
 
+  if (btnDoubleShot.changedToPressed())
+  {
+    doubleShot = true;
+    joystick.setText(0, 0, "Double Shot On");
+  }
+
   if (btnShoot.isPressed())
   {
-    ballIndexer.setTarget	(+200);
-    ballIntake.setTarget	(+200);
+    ballIndexer.moveVelocity(200);
+    ballIntake.moveVelocity (600);
+    if (doubleShot)
+      doubleShotControl();
   }
   else if (btnReverseBallSystem.isPressed())
   {
-    ballIndexer.setTarget(-200);
-    ballIntake.setTarget(-200);
+    ballIndexer.moveVelocity(-200);
+    ballIntake.moveVelocity (-600);
   }
-  else if(ballIntakeToggle)
+  // else if(ballIntakeToggle)
+  // {
+  //   ballIntake.setTarget  (200);
+  //   ballIndexer.setTarget (0);
+  // }
+  // else
+  // {
+  //   ballIndexer.setTarget	(0);
+  //   ballIntake.setTarget	(0);
+  // }
+  else if(btnBallIntake.isPressed())
   {
-    ballIntake.setTarget(200);
-    ballIndexer.setTarget(0);
+    ballIndexer.moveVelocity(0);
+    ballIntake.moveVelocity (600);
   }
   else
   {
-    ballIndexer.setTarget	(0);
-    ballIntake.setTarget	(0);
+    ballIndexer.moveVelocity(0);
+    ballIntake.moveVelocity	(0);
   }
 }
 
-void brakeControl ()
+void doubleShotControl ()
 {
-  if (btnLazyMode.changedToPressed())
-    lazy = !lazy;
-  if (lazy)
-    drive.setBrakeMode(AbstractMotor::brakeMode::hold);
-  else
-    drive.setBrakeMode(AbstractMotor::brakeMode::coast);
+  if (flywheel.getTargetVelocity() - flywheel.getActualVelocity() > 15 && doubleShot)
+  {
+    doubleShot = false;
+
+    ballIntake.moveVelocity(0);
+    ballIndexer.moveVelocity(0);
+
+    flywheel.moveVelocity(140);
+    while (flywheel.getActualVelocity() <= 138)
+      pros::Task::delay(10);
+
+    ballIntake.moveVelocity(600);
+    ballIndexer.moveVelocity(200);
+
+    pros::Task::delay(500);
+
+    joystick.clearLine(0);
+  }
+}
+
+void lazyMode ()
+{
+  driveL.tarePosition();
+  driveR.tarePosition();
+
+  driveL.setBrakeMode(AbstractMotor::brakeMode::hold);
+  driveR.setBrakeMode(AbstractMotor::brakeMode::hold);
+
+  pros::Task::delay(500);
+
+  driveL.moveAbsolute(0, 200);
+  driveR.moveAbsolute(0, 200);
 }
 
 void doArcade ()
 {
-  drive.arcade
-  (
-    joystick.getAnalog(ControllerAnalog::leftY),
-    joystick.getAnalog(ControllerAnalog::rightY)
-  );
+  if (!lazy)
+  {
+    driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+    drive.arcade
+    (
+      joystick.getAnalog(ControllerAnalog::leftY),
+      joystick.getAnalog(ControllerAnalog::rightX)
+    );
+  }
+  else
+    lazyMode();
 }
 
 void doTank ()
 {
-  drive.tank
-  (
-    joystick.getAnalog(ControllerAnalog::leftY),
-    joystick.getAnalog(ControllerAnalog::rightY)
-  );
+  if (!lazy)
+  {
+    driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+    drive.tank
+    (
+      joystick.getAnalog(ControllerAnalog::leftY),
+      joystick.getAnalog(ControllerAnalog::rightY)
+    );
+  }
+  else
+    lazyMode();
 }

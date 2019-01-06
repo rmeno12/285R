@@ -1,11 +1,19 @@
-#include "../header files/initOp"
+#include "../header files/initRobot"
 
 void opcontrol()
 {
-  flywheel.setTarget(170);
-  doArcade();
+  l.tarePosition();
+  while(ONLINE)
+  {
+    flywheel.moveVelocity(190);
 
-  brakeControl();
-  ballControl();
-  lControl();
+    if (btnLazyMode.changedToPressed())
+      lazy = !lazy;
+
+    doArcade();
+    // lazyModeFn();
+    doubleShotControl();
+    ballControl();
+    lControl();
+  }
 }
