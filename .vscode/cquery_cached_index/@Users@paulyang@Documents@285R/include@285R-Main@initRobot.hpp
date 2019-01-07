@@ -22,6 +22,7 @@ extern ChassisControllerIntegrated drive;
 extern MotorGroup driveL;
 extern MotorGroup driveR;
 
+extern ChassisControllerIntegrated aut;
 extern AsyncMotionProfileController profile;
 
 extern Motor ballIntake;
