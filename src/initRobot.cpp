@@ -10,7 +10,7 @@ ChassisControllerIntegrated drive = ChassisControllerFactory::create
    {1, -2},
    {-10, 9},
    AbstractMotor::gearset::green,
-   {4.125_in, 9.78_in}
+   {4.125_in, 11.375_in}
 );
 
 MotorGroup driveL = MotorGroup({1, -2});
