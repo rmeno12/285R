@@ -7,6 +7,9 @@
 #define FWD 0
 #define BWD 1
 
+#define ARCADE 1
+#define TANK 0
+
 #define ONLINE 1
 
 extern ControllerButton btnShoot;
@@ -17,6 +20,7 @@ extern ControllerButton btnDoubleShot;
 extern ControllerButton btnLUsager;
 
 extern ControllerButton btnLazyMode;
+extern ControllerButton btnDriveStyle;
 
 extern ChassisControllerIntegrated drive;
 extern MotorGroup driveL;
@@ -31,12 +35,10 @@ extern Motor flywheel;
 extern Motor l;
 
 extern bool ballIntakeToggle;
-extern bool lazy;
+extern bool driveStyleToggle;
 extern bool doubleShot;
-
 extern bool lUsage;
-
-extern const bool online;
+extern bool lazy;
 
 // Opertion Control Functions //
 void lControl          ();
@@ -47,6 +49,7 @@ void lazyMode ();
 
 void doArcade ();
 void doTank   ();
+void driveStyle();
 
 
 // Autonomous Functions //

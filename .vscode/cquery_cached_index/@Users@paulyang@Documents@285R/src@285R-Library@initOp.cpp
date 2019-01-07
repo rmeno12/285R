@@ -10,11 +10,13 @@ ControllerButton btnDoubleShot                  (ControllerDigital::X );
 ControllerButton btnLUsager                     (ControllerDigital::L2);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
 
 ControllerButton btnLazyMode										(ControllerDigital::up);
+ControllerButton btnDriveStyle                  (ControllerDigital::down);
 
 bool ballIntakeToggle {false};
-bool lazy             {false};
+bool driveStyleToggle {ARCADE};
 bool doubleShot       {false};
 bool lUsage           {false};
+bool lazy             {false};
 
 void lControl ()
 {
@@ -118,8 +120,8 @@ void doArcade ()
 {
   if (!lazy)
   {
-    driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
-    driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+    driveL.setBrakeMode(AbstractMotor::brakeMode::brake);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::brake);
     drive.arcade
     (
       joystick.getAnalog(ControllerAnalog::leftY),
@@ -134,8 +136,8 @@ void doTank ()
 {
   if (!lazy)
   {
-    driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
-    driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+    driveL.setBrakeMode(AbstractMotor::brakeMode::brake);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::brake);
     drive.tank
     (
       joystick.getAnalog(ControllerAnalog::leftY),
@@ -144,4 +146,17 @@ void doTank ()
   }
   else
     lazyMode();
+}
+
+void driveStyle ()
+{
+  if (btnDriveStyle.changedToPressed())
+  {
+    driveStyleToggle = !driveStyleToggle;
+  }
+
+  if (driveStyleToggle)
+    doArcade();
+  else
+    doTank();
 }
