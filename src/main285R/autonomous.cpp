@@ -1,5 +1,5 @@
-#include "../header files/initRobot"
-#include "../header files/waypoints"
+#include "initRobot.hpp"
+#include "waypoints.hpp"
 
 void autonomous()
 {

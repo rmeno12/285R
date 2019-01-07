@@ -1,4 +1,4 @@
-#include "../header files/initRobot"
+#include "initRobot.hpp"
 
 Controller joystick;
 
@@ -100,6 +100,8 @@ void doubleShotControl ()
 
 void lazyMode ()
 {
+  drive.stop();
+
   driveL.tarePosition();
   driveR.tarePosition();
 

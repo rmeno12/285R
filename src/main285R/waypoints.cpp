@@ -1,4 +1,4 @@
-#include "../header files/waypoints"
+#include "waypoints.hpp"
 
 /////////// Initial Points //////////
 Point initRed

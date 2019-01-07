@@ -1,5 +1,5 @@
 #pragma once
-#include "main.h"
+#include "../main.h"
 
 #define RED 1
 #define BLUE 0

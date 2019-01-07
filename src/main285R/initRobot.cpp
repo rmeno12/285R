@@ -1,4 +1,4 @@
-#include "../header files/initRobot"
+#include "initRobot.hpp"
 
 Motor ballIntake  (4, true,  AbstractMotor::gearset::blue );
 Motor ballIndexer (5, false, AbstractMotor::gearset::green);
