@@ -100,6 +100,8 @@ void doubleShotControl ()
 
 void lazyMode ()
 {
+  drive.stop();
+
   driveL.tarePosition();
   driveR.tarePosition();
 
