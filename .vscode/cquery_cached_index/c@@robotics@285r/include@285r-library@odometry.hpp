@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
 
+#include "main.h"
 #include "285R-Main/initRobot.hpp"
 #include <valarray>
 #include <cmath>

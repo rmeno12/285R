@@ -47,14 +47,14 @@ void intakeStyle ()
     if (btnShoot.isPressed())
     {
       ballIndexer.moveVelocity  (200);
-      ballIntake.moveVelocity   (600);
+      ballIntake.moveVelocity   (420);
       if (doubleShot)
         doubleShotControl();
     }
     else if (btnReverseBallSystem.isPressed())
     {
       ballIndexer.moveVelocity  (-200);
-      ballIntake.moveVelocity   (-600);
+      ballIntake.moveVelocity   (-420);
     }
     else if(ballIntakeToggle)
     {
@@ -72,19 +72,19 @@ void intakeStyle ()
     if (btnShoot.isPressed())
     {
       ballIndexer.moveVelocity(200);
-      ballIntake.moveVelocity (600);
+      ballIntake.moveVelocity (420);
       if (doubleShot)
         doubleShotControl();
     }
     else if (btnReverseBallSystem.isPressed())
     {
       ballIndexer.moveVelocity(-200);
-      ballIntake.moveVelocity (-600);
+      ballIntake.moveVelocity (-420);
     }
     else if(btnBallIntake.isPressed())
     {
       ballIndexer.moveVelocity(0);
-      ballIntake.moveVelocity (600);
+      ballIntake.moveVelocity (420);
     }
     else
     {
@@ -121,7 +121,7 @@ void doubleShotControl ()
     while (flywheel.getActualVelocity() <= 138)
       pros::Task::delay(10);
 
-    ballIntake.moveVelocity(600);
+    ballIntake.moveVelocity(420);
     ballIndexer.moveVelocity(200);
 
     pros::Task::delay(500);
