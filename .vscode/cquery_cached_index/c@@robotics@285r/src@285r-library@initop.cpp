@@ -10,11 +10,15 @@ ControllerButton btnDoubleShot                  (ControllerDigital::X );
 ControllerButton btnLUsager                     (ControllerDigital::L2);         //> 'L' refers to the robot's arm which was in the shape of an 'L' in its ealy days
 
 ControllerButton btnLazyMode										(ControllerDigital::up);
+ControllerButton btnDriveStyle                  (ControllerDigital::down);
+ControllerButton btnIntakeStyle                 (ControllerDigital::left);
 
-bool ballIntakeToggle {false};
-bool lazy             {false};
-bool doubleShot       {false};
-bool lUsage           {false};
+bool intakeStyleToggle  {TOGGLE};
+bool ballIntakeToggle   {false};
+bool driveStyleToggle   {ARCADE};
+bool doubleShot         {false};
+bool lUsage             {false};
+bool lazy               {false};
 
 void lControl ()
 {
@@ -31,6 +35,65 @@ void lControl ()
   }
 }
 
+void intakeStyle ()
+{
+  if (btnIntakeStyle.changedToPressed())
+  {
+    intakeStyleToggle = !intakeStyleToggle;
+  }
+
+  if (intakeStyleToggle)
+  {
+    if (btnShoot.isPressed())
+    {
+      ballIndexer.moveVelocity  (200);
+      ballIntake.moveVelocity   (600);
+      if (doubleShot)
+        doubleShotControl();
+    }
+    else if (btnReverseBallSystem.isPressed())
+    {
+      ballIndexer.moveVelocity  (-200);
+      ballIntake.moveVelocity   (-600);
+    }
+    else if(ballIntakeToggle)
+    {
+      ballIntake.moveVelocity   (200);
+      ballIndexer.moveVelocity  (0);
+    }
+    else
+    {
+      ballIndexer.moveVelocity	(0);
+      ballIntake.moveVelocity	  (0);
+    }
+  }
+  else
+  {
+    if (btnShoot.isPressed())
+    {
+      ballIndexer.moveVelocity(200);
+      ballIntake.moveVelocity (600);
+      if (doubleShot)
+        doubleShotControl();
+    }
+    else if (btnReverseBallSystem.isPressed())
+    {
+      ballIndexer.moveVelocity(-200);
+      ballIntake.moveVelocity (-600);
+    }
+    else if(btnBallIntake.isPressed())
+    {
+      ballIndexer.moveVelocity(0);
+      ballIntake.moveVelocity (600);
+    }
+    else
+    {
+      ballIndexer.moveVelocity(0);
+      ballIntake.moveVelocity	(0);
+    }
+  }
+}
+
 void ballControl ()
 {
   if (btnBallIntake.changedToPressed())
@@ -42,38 +105,7 @@ void ballControl ()
     joystick.setText(0, 0, "Double Shot On");
   }
 
-  if (btnShoot.isPressed())
-  {
-    ballIndexer.moveVelocity(200);
-    ballIntake.moveVelocity (600);
-    if (doubleShot)
-      doubleShotControl();
-  }
-  else if (btnReverseBallSystem.isPressed())
-  {
-    ballIndexer.moveVelocity(-200);
-    ballIntake.moveVelocity (-600);
-  }
-  // else if(ballIntakeToggle)
-  // {
-  //   ballIntake.setTarget  (200);
-  //   ballIndexer.setTarget (0);
-  // }
-  // else
-  // {
-  //   ballIndexer.setTarget	(0);
-  //   ballIntake.setTarget	(0);
-  // }
-  else if(btnBallIntake.isPressed())
-  {
-    ballIndexer.moveVelocity(0);
-    ballIntake.moveVelocity (600);
-  }
-  else
-  {
-    ballIndexer.moveVelocity(0);
-    ballIntake.moveVelocity	(0);
-  }
+  intakeStyle();
 }
 
 void doubleShotControl ()
@@ -118,8 +150,8 @@ void doArcade ()
 {
   if (!lazy)
   {
-    driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
-    driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+    driveL.setBrakeMode(AbstractMotor::brakeMode::brake);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::brake);
     drive.arcade
     (
       joystick.getAnalog(ControllerAnalog::leftY),
@@ -134,8 +166,8 @@ void doTank ()
 {
   if (!lazy)
   {
-    driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
-    driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+    driveL.setBrakeMode(AbstractMotor::brakeMode::brake);
+    driveR.setBrakeMode(AbstractMotor::brakeMode::brake);
     drive.tank
     (
       joystick.getAnalog(ControllerAnalog::leftY),
@@ -144,4 +176,17 @@ void doTank ()
   }
   else
     lazyMode();
+}
+
+void driveStyle ()
+{
+  if (btnDriveStyle.changedToPressed())
+  {
+    driveStyleToggle = !driveStyleToggle;
+  }
+
+  if (driveStyleToggle)
+    doArcade();
+  else
+    doTank();
 }

@@ -10,6 +10,9 @@
 #define ARCADE 1
 #define TANK 0
 
+#define TOGGLE 1
+#define HOLD 0
+
 #define ONLINE 1
 
 extern ControllerButton btnShoot;
@@ -34,14 +37,16 @@ extern Motor ballIndexer;
 extern Motor flywheel;
 extern Motor l;
 
+// Opertion Control Declarations //
+extern bool intakeStyleToggle;
 extern bool ballIntakeToggle;
 extern bool driveStyleToggle;
 extern bool doubleShot;
 extern bool lUsage;
 extern bool lazy;
 
-// Opertion Control Functions //
 void lControl          ();
+void intakeStyle       ();
 void ballControl       ();
 void doubleShotControl ();
 
@@ -52,7 +57,7 @@ void doTank   ();
 void driveStyle();
 
 
-// Autonomous Functions //
+// Autonomous Declarations //
 extern const bool right;
 extern const bool left;
 

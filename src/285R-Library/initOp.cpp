@@ -11,12 +11,14 @@ ControllerButton btnLUsager                     (ControllerDigital::L2);        
 
 ControllerButton btnLazyMode										(ControllerDigital::up);
 ControllerButton btnDriveStyle                  (ControllerDigital::down);
+ControllerButton btnIntakeStyle                 (ControllerDigital::left);
 
-bool ballIntakeToggle {false};
-bool driveStyleToggle {ARCADE};
-bool doubleShot       {false};
-bool lUsage           {false};
-bool lazy             {false};
+bool intakeStyleToggle  {TOGGLE};
+bool ballIntakeToggle   {false};
+bool driveStyleToggle   {ARCADE};
+bool doubleShot         {false};
+bool lUsage             {false};
+bool lazy               {false};
 
 void lControl ()
 {
@@ -33,6 +35,65 @@ void lControl ()
   }
 }
 
+void intakeStyle ()
+{
+  if (btnIntakeStyle.changedToPressed())
+  {
+    intakeStyleToggle = !intakeStyleToggle;
+  }
+
+  if (intakeStyleToggle)
+  {
+    if (btnShoot.isPressed())
+    {
+      ballIndexer.moveVelocity  (200);
+      ballIntake.moveVelocity   (600);
+      if (doubleShot)
+        doubleShotControl();
+    }
+    else if (btnReverseBallSystem.isPressed())
+    {
+      ballIndexer.moveVelocity  (-200);
+      ballIntake.moveVelocity   (-600);
+    }
+    else if(ballIntakeToggle)
+    {
+      ballIntake.moveVelocity   (200);
+      ballIndexer.moveVelocity  (0);
+    }
+    else
+    {
+      ballIndexer.moveVelocity	(0);
+      ballIntake.moveVelocity	  (0);
+    }
+  }
+  else
+  {
+    if (btnShoot.isPressed())
+    {
+      ballIndexer.moveVelocity(200);
+      ballIntake.moveVelocity (600);
+      if (doubleShot)
+        doubleShotControl();
+    }
+    else if (btnReverseBallSystem.isPressed())
+    {
+      ballIndexer.moveVelocity(-200);
+      ballIntake.moveVelocity (-600);
+    }
+    else if(btnBallIntake.isPressed())
+    {
+      ballIndexer.moveVelocity(0);
+      ballIntake.moveVelocity (600);
+    }
+    else
+    {
+      ballIndexer.moveVelocity(0);
+      ballIntake.moveVelocity	(0);
+    }
+  }
+}
+
 void ballControl ()
 {
   if (btnBallIntake.changedToPressed())
@@ -44,38 +105,7 @@ void ballControl ()
     joystick.setText(0, 0, "Double Shot On");
   }
 
-  if (btnShoot.isPressed())
-  {
-    ballIndexer.moveVelocity(200);
-    ballIntake.moveVelocity (600);
-    if (doubleShot)
-      doubleShotControl();
-  }
-  else if (btnReverseBallSystem.isPressed())
-  {
-    ballIndexer.moveVelocity(-200);
-    ballIntake.moveVelocity (-600);
-  }
-  // else if(ballIntakeToggle)
-  // {
-  //   ballIntake.setTarget  (200);
-  //   ballIndexer.setTarget (0);
-  // }
-  // else
-  // {
-  //   ballIndexer.setTarget	(0);
-  //   ballIntake.setTarget	(0);
-  // }
-  else if(btnBallIntake.isPressed())
-  {
-    ballIndexer.moveVelocity(0);
-    ballIntake.moveVelocity (600);
-  }
-  else
-  {
-    ballIndexer.moveVelocity(0);
-    ballIntake.moveVelocity	(0);
-  }
+  intakeStyle();
 }
 
 void doubleShotControl ()

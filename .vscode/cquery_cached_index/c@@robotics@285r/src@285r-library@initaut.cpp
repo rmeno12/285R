@@ -1,11 +1,19 @@
 #include "285R-Main/initRobot.hpp"
 
+ChassisControllerIntegrated aut = ChassisControllerFactory::create
+(
+   {1, -2},
+   {-10, 9},
+   AbstractMotor::gearset::green,
+   {4.125_in, 11.375_in}
+);
+
 AsyncMotionProfileController profile = AsyncControllerFactory::motionProfile
 (
    1.25,
    2.0,
    5.0,
-   drive
+   aut
 );
 
 const bool right {1};
@@ -25,7 +33,7 @@ void shoot ()
 void turn (bool direction)
 {
   if (direction)
-  drive.turnAngle(90_deg);
+  aut.turnAngle(90_deg);
   else
-  drive.turnAngle(-90_deg);
+  aut.turnAngle(-90_deg);
 }

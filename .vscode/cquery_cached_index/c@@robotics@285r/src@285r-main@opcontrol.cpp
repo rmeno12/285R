@@ -10,8 +10,8 @@ void opcontrol()
     if (btnLazyMode.changedToPressed())
       lazy = !lazy;
 
-    doArcade();
-    // lazyModeFn();
+    driveStyle();
+
     doubleShotControl();
     ballControl();
     lControl();
